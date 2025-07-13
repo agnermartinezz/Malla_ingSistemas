@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malla Curricular - Ingeniería de Sistemas UNEFA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .semester {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .subject {
+            margin: 5px 0;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #e8f4f8;
+            display: flex;
+            align-items: center;
+        }
+        .subject input {
+            margin-right: 10px;
+        }
+        .approved {
+            background-color: #d4edda;
+        }
+        .unlocked {
+            background-color: #fff3cd;
+        }
+        .locked {
+            background-color: #f8d7da;
+            opacity: 0.6;
+        }
+        .prerequisites {
+            font-size: 0.8em;
+            color: #6c757d;
+            margin-left: 10px;
+        }
+        .controls {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #e2e3e5;
+            border-radius: 5px;
+        }
+        button {
+            padding: 8px 15px;
+            margin-right: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Malla Curricular - Ingeniería de Sistemas UNEFA</h1>
+    
+    <div class="controls">
+        <button onclick="markAllApproved()">Marcar todas como aprobadas</button>
+        <button onclick="clearAll()">Limpiar todas</button>
+        <button onclick="saveProgress()">Guardar progreso</button>
+    </div>
+
+    <div id="semester1" class="semester">
+        <h2>Semestre 1</h2>
+        <div class="subject" id="matematica1">
+            <input type="checkbox" onchange="updateSubjects()"> MATEMÁTICA 1
+            <span class="prerequisites">(Pre: MATEMÁTICA 2, FÍSICA 1, ALGEBRA LINEAL, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="geometria">
+            <input type="checkbox" onchange="updateSubjects()"> GEOMETRIA ANALITICA
+            <span class="prerequisites">(Pre: MATEMÁTICA 2, FÍSICA 1, ALGEBRA LINEAL, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="hombre">
+            <input type="checkbox" onchange="updateSubjects()"> HOMBRE, SOCIEDAD, CIENCIA Y TECNOLOGIA
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="dibujo">
+            <input type="checkbox" onchange="updateSubjects()"> DIBUJO
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="educacion">
+            <input type="checkbox" onchange="updateSubjects()"> EDUCACION AMBIENTAL
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="seminario1">
+            <input type="checkbox" onchange="updateSubjects()"> SEMINARIO 1
+            <span class="prerequisites">(Pre: SEMINARIO 2, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="ingles1">
+            <input type="checkbox" onchange="updateSubjects()"> INGLES 1
+            <span class="prerequisites">(Pre: INGLES 2, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="defensa1">
+            <input type="checkbox" onchange="updateSubjects()"> DEFENSA INTEGRAL DE LA NACION 1
+            <span class="prerequisites">(Pre: DEFENSA 2, PASANTIA/TEG)</span>
+        </div>
+    </div>
+
+    <div id="semester2" class="semester">
+        <h2>Semestre 2</h2>
+        <div class="subject" id="matematica2">
+            <input type="checkbox" onchange="updateSubjects()"> MATEMATICA 2
+            <span class="prerequisites">(Pre: MATEMATICA 3, FISICA 2, PROBABILIDADES Y ESTADISTICA, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="fisica1">
+            <input type="checkbox" onchange="updateSubjects()"> FISICA 1
+            <span class="prerequisites">(Pre: FISICA 2, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="algebra">
+            <input type="checkbox" onchange="updateSubjects()"> ALGEBRA LINEAL
+            <span class="prerequisites">(Pre: LOGICA MATEMATICA, PROGRAMACION, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="quimica">
+            <input type="checkbox" onchange="updateSubjects()"> QUÍMICA GENERAL
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="seminario2">
+            <input type="checkbox" onchange="updateSubjects()"> SEMINARIO 2
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="ingles2">
+            <input type="checkbox" onchange="updateSubjects()"> INGLES 2
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="defensa2">
+            <input type="checkbox" onchange="updateSubjects()"> DEFENSA INTEGRAL DE LA NACION 2
+            <span class="prerequisites">(Pre: DEFENSA 3, PASANTIA/TEG)</span>
+        </div>
+    </div>
+
+    <div id="semester3" class="semester">
+        <h2>Semestre 3</h2>
+        <div class="subject" id="matematica3">
+            <input type="checkbox" onchange="updateSubjects()"> MATEMATICA 3
+            <span class="prerequisites">(Pre: CALCULO NUMERICO, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="fisica2">
+            <input type="checkbox" onchange="updateSubjects()"> FISICA 2
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="probabilidad">
+            <input type="checkbox" onchange="updateSubjects()"> PROBABILIDADES Y ESTADISTICA
+            <span class="prerequisites">(Pre: TEORIA DE GRAFOS, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="programacion">
+            <input type="checkbox" onchange="updateSubjects()"> PROGRAMACIÓN
+            <span class="prerequisites">(Pre: LENGUAJE DE PROGRAMACIÓN 1, PROCESAMIENTO DE DATOS, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="sistemasAdmin">
+            <input type="checkbox" onchange="updateSubjects()"> SISTEMAS ADMINISTRATIVOS
+            <span class="prerequisites">(Pre: SISTEMAS DE PRODUCCION, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="defensa3">
+            <input type="checkbox" onchange="updateSubjects()"> DEFENSA INTEGRAL DE LA NACION 3
+            <span class="prerequisites">(Pre: DEFENSA 4, PASANTIA/TEG)</span>
+        </div>
+    </div>
+
+    <div id="semester4" class="semester">
+        <h2>Semestre 4</h2>
+        <div class="subject" id="calculo">
+            <input type="checkbox" onchange="updateSubjects()"> CALCULO NUMERICO
+            <span class="prerequisites">(Pre: INVESTIGACION DE OPERACIONES, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="logica">
+            <input type="checkbox" onchange="updateSubjects()"> LOGICA MATEMATICA
+            <span class="prerequisites">(Pre: TEORIA DE GRAFOS, CIRCUITOS LOGICOS, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="teoriaSistemas">
+            <input type="checkbox" onchange="updateSubjects()"> TEORIA DE LOS SISTEMAS
+            <span class="prerequisites">(Pre: ANALISIS DE SISTEMAS, BASE DE DATOS, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="lenguaje1">
+            <input type="checkbox" onchange="updateSubjects()"> LENGUAJE DE PROGRAMACION 1
+            <span class="prerequisites">(Pre: LENGUAJE DE PROGRAMACION 2, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="procesamiento">
+            <input type="checkbox" onchange="updateSubjects()"> PROCESAMIENTO DE DATOS
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="sistemasProd">
+            <input type="checkbox" onchange="updateSubjects()"> SISTEMAS DE PRODUCCION
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="defensa4">
+            <input type="checkbox" onchange="updateSubjects()"> DEFENSA INTEGRAL DE LA NACION 4
+            <span class="prerequisites">(Pre: DEFENSA 5, PASANTIA/TEG)</span>
+        </div>
+    </div>
+
+    <div id="semester5" class="semester">
+        <h2>Semestre 5</h2>
+        <div class="subject" id="investigacion">
+            <input type="checkbox" onchange="updateSubjects()"> INVESTIGACION DE OPERACIONES
+            <span class="prerequisites">(Pre: OPTIMIZACION NO LINEAL, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="grafos">
+            <input type="checkbox" onchange="updateSubjects()"> TEORIA DE GRAFOS
+            <span class="prerequisites">(Pre: PROCESOS ESTOCASTICOS, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="circuitos">
+            <input type="checkbox" onchange="updateSubjects()"> CIRCUITOS LOGICOS
+            <span class="prerequisites">(Pre: ARQUITECTURA DEL COMPUTADOR, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="basedatos">
+            <input type="checkbox" onchange="updateSubjects()"> BASE DE DATOS
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="analisis">
+            <input type="checkbox" onchange="updateSubjects()"> ANALISIS DE SISTEMAS
+            <span class="prerequisites">(Pre: DISEÑO DE SISTEMAS, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="lenguaje2">
+            <input type="checkbox" onchange="updateSubjects()"> LENGUAJE DE PROGRAMACION 2
+            <span class="prerequisites">(Pre: LENGUAJE DE PROGRAMACION 3, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="defensa5">
+            <input type="checkbox" onchange="updateSubjects()"> DEFENSA INTEGRAL DE LA NACION 5
+            <span class="prerequisites">(Pre: DEFENSA 6, PASANTIA/TEG)</span>
+        </div>
+    </div>
+
+    <div id="semester6" class="semester">
+        <h2>Semestre 6</h2>
+        <div class="subject" id="optimizacion">
+            <input type="checkbox" onchange="updateSubjects()"> OPTIMIZACION NO LINEAL
+            <span class="prerequisites">(Pre: SIMULACION Y MODELOS, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="procesos">
+            <input type="checkbox" onchange="updateSubjects()"> PROCESOS ESTOCASTICOS
+            <span class="prerequisites">(Pre: SIMULACION Y MODELOS, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="arquitectura">
+            <input type="checkbox" onchange="updateSubjects()"> ARQUITECTURA DEL COMPUTADOR
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="sistemasOp">
+            <input type="checkbox" onchange="updateSubjects()"> SISTEMAS OPERATIVOS
+            <span class="prerequisites">(Pre: REDES, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="diseno">
+            <input type="checkbox" onchange="updateSubjects()"> DISEÑO DE SISTEMAS
+            <span class="prerequisites">(Pre: IMPLANTACION DE SISTEMAS, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="lenguaje3">
+            <input type="checkbox" onchange="updateSubjects()"> LENGUAJE DE PROGRAMACION 3
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="defensa6">
+            <input type="checkbox" onchange="updateSubjects()"> DEFENSA INTEGRAL DE LA NACION 6
+            <span class="prerequisites">(Pre: DEFENSA 7, PASANTIA/TEG)</span>
+        </div>
+    </div>
+
+    <div id="semester7" class="semester">
+        <h2>Semestre 7</h2>
+        <div class="subject" id="simulacion">
+            <input type="checkbox" onchange="updateSubjects()"> SIMULACION Y MODELOS
+            <span class="prerequisites">(Pre: TEORÍA DE DECISIONES, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="metodologia">
+            <input type="checkbox" onchange="updateSubjects()"> METODOLOGIA DE LA INVESTIGACION
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="gerencia">
+            <input type="checkbox" onchange="updateSubjects()"> GERENCIA DE LA INFORMATICA
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="redes">
+            <input type="checkbox" onchange="updateSubjects()"> REDES
+            <span class="prerequisites">(Pre: TELEPROCESOS, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="implantacion">
+            <input type="checkbox" onchange="updateSubjects()"> IMPLANTACION DE SISTEMAS
+            <span class="prerequisites">(Pre: AUDITORIA DE SISTEMAS, PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="electivaTec1">
+            <input type="checkbox" onchange="updateSubjects()"> ELECTIVA TECNICA 1
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="electivaNoTec1">
+            <input type="checkbox" onchange="updateSubjects()"> ELECTIVA NO TECNICA 1
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="defensa7">
+            <input type="checkbox" onchange="updateSubjects()"> DEFENSA INTEGRAL DE LA NACION 7
+            <span class="prerequisites">(Pre: DEFENSA 8, PASANTIA/TEG)</span>
+        </div>
+    </div>
+
+    <div id="semester8" class="semester">
+        <h2>Semestre 8</h2>
+        <div class="subject" id="decisiones">
+            <input type="checkbox" onchange="updateSubjects()"> TEORIA DE DECISIONES
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="marcoLegal">
+            <input type="checkbox" onchange="updateSubjects()"> MARCO LEGAL PARA EL EJERCIO DE LA INGENIERIA
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="teleprocesos">
+            <input type="checkbox" onchange="updateSubjects()"> TELEPROCESOS
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="auditoria">
+            <input type="checkbox" onchange="updateSubjects()"> AUDITORIA DE SISTEMAS
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="electivaTec2">
+            <input type="checkbox" onchange="updateSubjects()"> ELECTIVA TECNICA 2
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="electivaNoTec2">
+            <input type="checkbox" onchange="updateSubjects()"> ELECTIVA NO TECNICA 2
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+        <div class="subject" id="defensa8">
+            <input type="checkbox" onchange="updateSubjects()"> DEFENSA INTEGRAL DE LA NACION 8
+            <span class="prerequisites">(Pre: PASANTIA/TEG)</span>
+        </div>
+    </div>
+
+    <div id="semester9" class="semester">
+        <h2>Semestre 9</h2>
+        <div class="subject" id="pasantia">
+            <input type="checkbox" onchange="updateSubjects()"> PASANTIA O TEG
+        </div>
+    </div>
+
+    <script>
+        // Definir las prelaciones
+        const prerequisites = {
+            // Semestre 1
+            matematica1: ['matematica2', 'fisica1', 'algebra', 'pasantia'],
+            geometria: ['matematica2', 'fisica1', 'algebra', 'pasantia'],
+            hombre: ['pasantia'],
+            dibujo: ['pasantia'],
+            educacion: ['pasantia'],
+            seminario1: ['seminario2', 'pasantia'],
+            ingles1: ['ingles2', 'pasantia'],
+            defensa1: ['defensa2', 'pasantia'],
+            
+            // Semestre 2
+            matematica2: ['matematica3', 'fisica2', 'probabilidad', 'pasantia'],
+            fisica1: ['fisica2', 'pasantia'],
+            algebra: ['logica', 'programacion', 'pasantia'],
+            quimica: ['pasantia'],
+            seminario2: ['pasantia'],
+            ingles2: ['pasantia'],
+            defensa2: ['defensa3', 'pasantia'],
+            
+            // Semestre 3
+            matematica3: ['calculo', 'pasantia'],
+            fisica2: ['pasantia'],
+            probabilidad: ['grafos', 'pasantia'],
+            programacion: ['lenguaje1', 'procesamiento', 'pasantia'],
+            sistemasAdmin: ['sistemasProd', 'pasantia'],
+            defensa3: ['defensa4', 'pasantia'],
+            
+            // Semestre 4
+            calculo: ['investigacion', 'pasantia'],
+            logica: ['grafos', 'circuitos', 'pasantia'],
+            teoriaSistemas: ['analisis', 'basedatos', 'pasantia'],
+            lenguaje1: ['lenguaje2', 'pasantia'],
+            procesamiento: ['pasantia'],
+            sistemasProd: ['pasantia'],
+            defensa4: ['defensa5', 'pasantia'],
+            
+            // Semestre 5
+            investigacion: ['optimizacion', 'pasantia'],
+            grafos: ['procesos', 'pasantia'],
+            circuitos: ['arquitectura', 'pasantia'],
+            basedatos: ['pasantia'],
+            analisis: ['diseno', 'pasantia'],
+            lenguaje2: ['lenguaje3', 'pasantia'],
+            defensa5: ['defensa6', 'pasantia'],
+            
+            // Semestre 6
+            optimizacion: ['simulacion', 'pasantia'],
+            procesos: ['simulacion', 'pasantia'],
+            arquitectura: ['pasantia'],
+            sistemasOp: ['redes', 'pasantia'],
+            diseno: ['implantacion', 'pasantia'],
+            lenguaje3: ['pasantia'],
+            defensa6: ['defensa7', 'pasantia'],
+            
+            // Semestre 7
+            simulacion: ['decisiones', 'pasantia'],
+            metodologia: ['pasantia'],
+            gerencia: ['pasantia'],
+            redes: ['teleprocesos', 'pasantia'],
+            implantacion: ['auditoria', 'pasantia'],
+            electivaTec1: ['pasantia'],
+            electivaNoTec1: ['pasantia'],
+            defensa7: ['defensa8', 'pasantia'],
+            
+            // Semestre 8
+            decisiones: ['pasantia'],
+            marcoLegal: ['pasantia'],
+            teleprocesos: ['pasantia'],
+            auditoria: ['pasantia'],
+            electivaTec2: ['pasantia'],
+            electivaNoTec2: ['pasantia'],
+            defensa8: ['pasantia']
+        };
+
+        // Cargar progreso guardado
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('mallaProgress');
+            if (savedProgress) {
+                const progress = JSON.parse(savedProgress);
+                for (const subjectId in progress) {
+                    const checkbox = document.getElementById(subjectId)?.querySelector('input[type="checkbox"]');
+                    if (checkbox) {
+                        checkbox.checked = progress[subjectId];
+                    }
+                }
+                updateSubjects();
+            }
+        }
+
+        // Guardar progreso
+        function saveProgress() {
+            const progress = {};
+            document.querySelectorAll('.subject').forEach(subject => {
+                const checkbox = subject.querySelector('input[type="checkbox"]');
+                if (checkbox) {
+                    progress[subject.id] = checkbox.checked;
+                }
+            });
+            localStorage.setItem('mallaProgress', JSON.stringify(progress));
+            alert('Progreso guardado correctamente');
+        }
+
+        // Marcar todas como aprobadas
+        function markAllApproved() {
+            document.querySelectorAll('.subject input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            updateSubjects();
+        }
+
+        // Limpiar todas
+        function clearAll() {
+            document.querySelectorAll('.subject input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            updateSubjects();
+        }
+
+        // Actualizar el estado de las materias según las prelaciones
+        function updateSubjects() {
+            // Primero, establecer el estado base de todas las materias
+            document.querySelectorAll('.subject').forEach(subject => {
+                const checkbox = subject.querySelector('input[type="checkbox"]');
+                
+                // Limpiar clases anteriores
+                subject.classList.remove('approved', 'unlocked', 'locked');
+                
+                if (checkbox.checked) {
+                    subject.classList.add('approved');
+                } else {
+                    // Verificar si todas las prelaciones están aprobadas
+                    const subjectId = subject.id;
+                    const prereqs = prerequisites[subjectId] || [];
+                    
+                    let allPrereqsApproved = true;
+                    for (const prereq of prereqs) {
+                        const prereqCheckbox = document.getElementById(prereq)?.querySelector('input[type="checkbox"]');
+                        if (prereqCheckbox && !prereqCheckbox.checked) {
+                            allPrereqsApproved = false;
+                            break;
+                        }
+                    }
+                    
+                    if (allPrereqsApproved && prereqs.length > 0) {
+                        subject.classList.add('unlocked');
+                    } else if (prereqs.length > 0) {
+                        subject.classList.add('locked');
+                    }
+                }
+            });
+        }
+
+        // Cargar el progreso al iniciar
+        window.onload = function() {
+            loadProgress();
+        };
+    </script>
+</body>
+</html>
