@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malla Curricular Completa - Ingeniería de Sistemas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .search-box {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            width: 300px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 5px;
+            margin-top: 20px;
+        }
+        .semester-title {
+            grid-column: 1 / -1;
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        .course {
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 2px solid transparent;
+        }
+        .course:hover {
+            transform: scale(1.03);
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+        }
+        .course.approved {
+            border-color: #4CAF50;
+            position: relative;
+        }
+        .course.approved:after {
+            content: "✓";
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #4CAF50;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .course-code {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .course-credits {
+            font-size: 0.8em;
+            color: inherit;
+            opacity: 0.8;
+        }
+        .basic { background-color: #4CAF50; color: white; }
+        .major { background-color: #2196F3; color: white; }
+        .elective-tech { background-color: #FFC107; color: #333; }
+        .elective-nontech { background-color: #FF9800; color: white; }
+        .humanistic { background-color: #9C27B0; color: white; }
+        .language { background-color: #607D8B; color: white; }
+        .defense { background-color: #F44336; color: white; }
+        .info-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+            display: none;
+        }
+        .prerequisites {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+        .prereq-item {
+            margin-bottom: 5px;
+            padding-left: 15px;
+            position: relative;
+        }
+        .prereq-item:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9em;
+        }
+        .color-box {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+        .toggle-approved {
+            background-color: #f0f0f0;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+        .toggle-approved:hover {
+            background-color: #e0e0e0;
+        }
+        .stats {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0%;
+            transition: width 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Malla Curricular Completa - Ingeniería de Sistemas (Pensum 2010 Diurno)</h1>
+        
+        <div class="controls">
+            <input type="text" class="search-box" placeholder="Buscar materia..." id="search-input">
+            <div class="toggle-approved" id="toggle-approved">Mostrar solo aprobadas</div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item"><span class="color-box" style="background-color: #4CAF50;"></span> Básicas</div>
+            <div class="legend-item"><span class="color-box" style="background-color: #2196F3;"></span> Profesionales</div>
+            <div class="legend-item"><span class="color-box" style="background-color: #FFC107;"></span> Electivas Técnicas</div>
+            <div class="legend-item"><span class="color-box" style="background-color: #FF9800;"></span> Electivas No Técnicas</div>
+            <div class="legend-item"><span class="color-box" style="background-color: #9C27B0;"></span> Humanísticas</div>
+            <div class="legend-item"><span class="color-box" style="background-color: #607D8B;"></span> Idiomas</div>
+            <div class="legend-item"><span class="color-box" style="background-color: #F44336;"></span> Defensa Integral</div>
+        </div>
+        
+        <div id="grid" class="grid"></div>
+        
+        <div class="stats">
+            <h3>Progreso de la Carrera</h3>
+            <div>Total UC: 224 | Aprobadas: <span id="approved-credits">0</span> UC</div>
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+            </div>
+            <div>Materias aprobadas: <span id="approved-courses">0</span> de 53</div>
+        </div>
+        
+        <div id="info-panel" class="info-panel">
+            <h3 id="course-title"></h3>
+            <div id="course-details"></div>
+            <div class="prerequisites">
+                <strong>Prelaciones:</strong>
+                <div id="prerequisites-list"></div>
+            </div>
+            <button id="toggle-approve-btn" style="margin-top: 10px; padding: 5px 10px;">Marcar como aprobada</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('grid');
+            const infoPanel = document.getElementById('info-panel');
+            const courseTitle = document.getElementById('course-title');
+            const courseDetails = document.getElementById('course-details');
+            const prerequisitesList = document.getElementById('prerequisites-list');
+            const searchInput = document.getElementById('search-input');
+            const toggleApprovedBtn = document.getElementById('toggle-approved');
+            const toggleApproveBtn = document.getElementById('toggle-approve-btn');
+            const approvedCreditsEl = document.getElementById('approved-credits');
+            const approvedCoursesEl = document.getElementById('approved-courses');
+            const progressBar = document.getElementById('progress-bar');
+            
+            // Datos completos de la malla curricular
+            const curriculum = [
+                {
+                    semester: "Semestre 1",
+                    courses: [
+                        { code: "MAT101", name: "Matemática I", credits: 5, type: "basic" },
+                        { code: "FIS101", name: "Física I", credits: 5, type: "basic" },
+                        { code: "DIB101", name: "Dibujo", credits: 2, type: "basic" },
+                        { code: "HST101", name: "Hombre, Sociedad, Ciencia y Tec", credits: 3, type: "humanistic" },
+                        { code: "ING101", name: "Inglés I", credits: 3, type: "language" },
+                        { code: "DIN101", name: "Defensa Integral de la Nación I", credits: 3, type: "defense" }
+                    ]
+                },
+                {
+                    semester: "Semestre 2",
+                    courses: [
+                        { code: "MAT102", name: "Matemática II", credits: 5, type: "basic", prerequisites: ["MAT101"] },
+                        { code: "FIS102", name: "Física II", credits: 5, type: "basic", prerequisites: ["FIS101"] },
+                        { code: "QUI102", name: "Química General", credits: 4, type: "basic" },
+                        { code: "ALG102", name: "Álgebra Lineal", credits: 4, type: "basic" },
+                        { code: "ING102", name: "Inglés II", credits: 3, type: "language", prerequisites: ["ING101"] },
+                        { code: "DIN102", name: "Defensa Integral de la Nación II", credits: 3, type: "defense" }
+                    ]
+                },
+                {
+                    semester: "Semestre 3",
+                    courses: [
+                        { code: "MAT103", name: "Matemática III", credits: 5, type: "basic", prerequisites: ["MAT102"] },
+                        { code: "LOG103", name: "Lógica Matemática", credits: 4, type: "basic" },
+                        { code: "TSI103", name: "Teoría de Sistemas", credits: 4, type: "major" },
+                        { code: "PRO103", name: "Programación", credits: 3, type: "major" },
+                        { code: "PES103", name: "Probabilidades y Estadística", credits: 4, type: "basic" },
+                        { code: "DIN103", name: "Defensa Integral de la Nación III", credits: 3, type: "defense" }
+                    ]
+                },
+                {
+                    semester: "Semestre 4",
+                    courses: [
+                        { code: "CNU104", name: "Cálculo Numérico", credits: 4, type: "basic", prerequisites: ["MAT103"] },
+                        { code: "TGR104", name: "Teoría de Grafos", credits: 4, type: "basic" },
+                        { code: "CIL104", name: "Circuitos Lógicos", credits: 4, type: "major" },
+                        { code: "ASI104", name: "Análisis de Sistemas", credits: 4, type: "major", prerequisites: ["TSI103"] },
+                        { code: "BD104", name: "Base de Datos", credits: 4, type: "major", prerequisites: ["PRO103"] },
+                        { code: "DIN104", name: "Defensa Integral de la Nación IV", credits: 3, type: "defense" }
+                    ]
+                },
+                {
+                    semester: "Semestre 5",
+                    courses: [
+                        { code: "IO105", name: "Investigación de Operaciones", credits: 5, type: "major", prerequisites: ["PES103"] },
+                        { code: "PES105", name: "Procesos Estocásticos", credits: 4, type: "major", prerequisites: ["PES103"] },
+                        { code: "ARQ105", name: "Arquitectura del Computador", credits: 5, type: "major", prerequisites: ["CIL104"] },
+                        { code: "DSI105", name: "Diseño de Sistemas", credits: 4, type: "major", prerequisites: ["ASI104"] },
+                        { code: "LP1105", name: "Lenguaje de Programación I", credits: 5, type: "major", prerequisites: ["PRO103"] },
+                        { code: "DIN105", name: "Defensa Integral de la Nación V", credits: 3, type: "defense" }
+                    ]
+                },
+                {
+                    semester: "Semestre 6",
+                    courses: [
+                        { code: "ONL106", name: "Optimización No Lineal", credits: 5, type: "major", prerequisites: ["IO105"] },
+                        { code: "SOP106", name: "Sistemas Operativos", credits: 4, type: "major", prerequisites: ["ARQ105"] },
+                        { code: "RED106", name: "Redes", credits: 4, type: "major" },
+                        { code: "ISI106", name: "Implantación de Sistemas", credits: 4, type: "major", prerequisites: ["DSI105"] },
+                        { code: "LP2106", name: "Lenguaje de Programación II", credits: 5, type: "major", prerequisites: ["LP1105"] },
+                        { code: "DIN106", name: "Defensa Integral de la Nación VI", credits: 3, type: "defense" }
+                    ]
+                },
+                {
+                    semester: "Semestre 7",
+                    courses: [
+                        { code: "SIM107", name: "Simulación y Modelos", credits: 5, type: "major", prerequisites: ["PES105"] },
+                        { code: "TEL107", name: "Teleprocesos", credits: 4, type: "major", prerequisites: ["RED106"] },
+                        { code: "AUD107", name: "Auditoría de Sistemas", credits: 4, type: "major" },
+                        { code: "GER107", name: "Gerencia de la Informática", credits: 4, type: "major" },
+                        { code: "LP3107", name: "Lenguaje de Programación III", credits: 5, type: "major", prerequisites: ["LP2106"] },
+                        { code: "DIN107", name: "Defensa Integral de la Nación VII", credits: 3, type: "defense" }
+                    ]
+                },
+                {
+                    semester: "Semestre 8",
+                    courses: [
+                        { code: "TED108", name: "Teoría de Decisiones", credits: 4, type: "major" },
+                        { code: "MET108", name: "Metodología de la Investigación", credits: 4, type: "major" },
+                        { code: "ML108", name: "Marco Legal para el Ejercicio", credits: 4, type: "major" },
+                        { code: "ELE108", name: "Electiva Técnica I", credits: 3, type: "elective-tech" },
+                        { code: "ENT108", name: "Electiva No Técnica I", credits: 3, type: "elective-nontech" },
+                        { code: "PAS108", name: "Pasantía o TEG", credits: 10, type: "major", prerequisites: ["MET108"] },
+                        { code: "DIN108", name: "Defensa Integral de la Nación VIII", credits: 3, type: "defense" }
+                    ]
+                },
+                {
+                    semester: "Electivas y Seminarios",
+                    courses: [
+                        { code: "ELE209", name: "Electiva Técnica II", credits: 3, type: "elective-tech" },
+                        { code: "ENT209", name: "Electiva No Técnica II", credits: 3, type: "elective-nontech" },
+                        { code: "SEM109", name: "Seminario I", credits: 1, type: "major" },
+                        { code: "SEM209", name: "Seminario II", credits: 1, type: "major" },
+                        { code: "PD209", name: "Procesamiento de Datos", credits: 4, type: "major" }
+                    ]
+                }
+            ];
+
+            // Estado de las materias aprobadas
+            let approvedCourses = JSON.parse(localStorage.getItem('approvedCourses')) || {};
+            let showOnlyApproved = false;
+            let currentSelectedCourse = null;
+
+            // Crear la malla curricular
+            function createGrid() {
+                grid.innerHTML = '';
+                
+                curriculum.forEach(semester => {
+                    // Añadir título del semestre
+                    const semesterTitle = document.createElement('div');
+                    semesterTitle.className = 'semester-title';
+                    semesterTitle.textContent = semester.semester;
+                    grid.appendChild(semesterTitle);
+                    
+                    // Añadir cursos del semestre
+                    semester.courses.forEach(course => {
+                        if (showOnlyApproved && !approvedCourses[course.code]) return;
+                        
+                        const courseElement = document.createElement('div');
+                        courseElement.className = `course ${course.type} ${approvedCourses[course.code] ? 'approved' : ''}`;
+                        courseElement.dataset.code = course.code;
+                        
+                        courseElement.innerHTML = `
+                            <div class="course-code">${course.code}</div>
+                            <div class="course-name">${course.name}</div>
+                            <div class="course-credits">${course.credits} UC</div>
+                        `;
+                        
+                        courseElement.addEventListener('click', () => {
+                            currentSelectedCourse = course;
+                            showCourseInfo(course);
+                        });
+                        
+                        grid.appendChild(courseElement);
+                    });
+                });
+                
+                updateStats();
+            }
+            
+            // Mostrar información del curso
+            function showCourseInfo(course) {
+                courseTitle.textContent = `${course.code} - ${course.name}`;
+                courseDetails.innerHTML = `
+                    <p><strong>Créditos:</strong> ${course.credits} UC</p>
+                    <p><strong>Tipo:</strong> ${getTypeName(course.type)}</p>
+                    <p><strong>Semestre:</strong> ${getSemesterForCourse(course.code)}</p>
+                `;
+                
+                // Mostrar prelaciones
+                prerequisitesList.innerHTML = '';
+                if (course.prerequisites && course.prerequisites.length > 0) {
+                    course.prerequisites.forEach(prereq => {
+                        const prereqCourse = findCourseByCode(prereq);
+                        if (prereqCourse) {
+                            const prereqItem = document.createElement('div');
+                            prereqItem.className = 'prereq-item';
+                            prereqItem.textContent = `${prereqCourse.code} - ${prereqCourse.name}`;
+                            prerequisitesList.appendChild(prereqItem);
+                        }
+                    });
+                } else {
+                    prerequisitesList.innerHTML = '<p>No tiene prelaciones</p>';
+                }
+                
+                // Configurar botón de aprobación
+                toggleApproveBtn.textContent = approvedCourses[course.code] ? 'Desmarcar aprobada' : 'Marcar como aprobada';
+                toggleApproveBtn.onclick = () => toggleCourseApproval(course.code);
+                
+                infoPanel.style.display = 'block';
+            }
+            
+            // Alternar aprobación de materia
+            function toggleCourseApproval(courseCode) {
+                if (approvedCourses[courseCode]) {
+                    delete approvedCourses[courseCode];
+                } else {
+                    approvedCourses[courseCode] = true;
+                }
+                
+                localStorage.setItem('approvedCourses', JSON.stringify(approvedCourses));
+                createGrid();
+                showCourseInfo(currentSelectedCourse);
+            }
+            
+            // Actualizar estadísticas
+            function updateStats() {
+                const totalCourses = curriculum.reduce((sum, semester) => sum + semester.courses.length, 0);
+                const approvedCount = Object.keys(approvedCourses).length;
+                const approvedCredits = curriculum.reduce((sum, semester) => {
+                    return sum + semester.courses.reduce((s, course) => {
+                        return s + (approvedCourses[course.code] ? course.credits : 0);
+                    }, 0);
+                }, 0);
+                
+                approvedCoursesEl.textContent = approvedCount;
+                approvedCreditsEl.textContent = approvedCredits;
+                progressBar.style.width = `${(approvedCredits / 224) * 100}%`;
+            }
+            
+            // Funciones auxiliares
+            function getTypeName(type) {
+                const types = {
+                    'basic': 'Básica',
+                    'major': 'Profesional',
+                    'elective-tech': 'Electiva Técnica',
+                    'elective-nontech': 'Electiva No Técnica',
+                    'humanistic': 'Humanística',
+                    'language': 'Idioma',
+                    'defense': 'Defensa Integral'
+                };
+                return types[type] || type;
+            }
+            
+            function getSemesterForCourse(code) {
+                for (let i = 0; i < curriculum.length; i++) {
+                    if (curriculum[i].courses.some(c => c.code === code)) {
+                        return curriculum[i].semester;
+                    }
+                }
+                return 'Desconocido';
+            }
+            
+            function findCourseByCode(code) {
+                for (const semester of curriculum) {
+                    const course = semester.courses.find(c => c.code === code);
+                    if (course) return course;
+                }
+                return null;
+            }
+            
+            // Event listeners
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                document.querySelectorAll('.course').forEach(course => {
+                    const code = course.dataset.code.toLowerCase();
+                    const name = course.querySelector('.course-name').textContent.toLowerCase();
+                    course.style.display = (code.includes(searchTerm) || name.includes(searchTerm) ? 'flex' : 'none';
+                });
+            });
+            
+            toggleApprovedBtn.addEventListener('click', () => {
+                showOnlyApproved = !showOnlyApproved;
+                toggleApprovedBtn.textContent = showOnlyApproved ? 'Mostrar todas' : 'Mostrar solo aprobadas';
+                createGrid();
+            });
+            
+            // Cerrar panel al hacer clic fuera
+            document.addEventListener('click', (e) => {
+                if (!infoPanel.contains(e.target) && !e.target.classList.contains('course')) {
+                    infoPanel.style.display = 'none';
+                }
+            });
+            
+            createGrid();
+        });
+    </script>
+</body>
+</html>
