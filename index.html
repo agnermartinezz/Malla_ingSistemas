@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malla Curricular - Ingeniería de Sistemas UNEFA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+            overflow-x: auto;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .btn-reset {
+            background-color: #e74c3c;
+        }
+        .btn-reset:hover {
+            background-color: #c0392b;
+        }
+        .semesters-container {
+            display: flex;
+            gap: 15px;
+            padding: 10px;
+            overflow-x: auto;
+        }
+        .semester {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            min-width: 280px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+        .subject {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ecf0f1;
+            display: flex;
+            align-items: center;
+        }
+        .subject input {
+            margin-right: 10px;
+        }
+        .locked {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .unlocked {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .completed {
+            background-color: #3498db;
+            color: white;
+        }
+        .pasantia {
+            background-color: #9b59b6;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+            font-size: 1.2em;
+        }
+        .requirements {
+            font-size: 0.8em;
+            color: #7f8c8d;
+            margin-left: 30px;
+        }
+        @media (max-width: 768px) {
+            .semesters-container {
+                flex-direction: column;
+            }
+            .semester {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Malla Curricular Interactiva</h1>
+    <h2>Ingeniería de Sistemas - UNEFA</h2>
+
+    <div class="controls">
+        <button class="btn" onclick="checkAll()">Marcar Todos</button>
+        <button class="btn btn-reset" onclick="uncheckAll()">Desmarcar Todos</button>
+    </div>
+
+    <div class="semesters-container">
+        <div id="semester1" class="semester">
+            <h3>1er Semestre</h3>
+            <div class="subject" id="matematica1">
+                <input type="checkbox" id="check-matematica1" onchange="updateSubjects()">
+                <label for="check-matematica1">Matemática 1</label>
+                <div class="requirements">Desbloquea: Matemática 2, Física 1, Álgebra Lineal y Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="geometria">
+                <input type="checkbox" id="check-geometria" onchange="updateSubjects()">
+                <label for="check-geometria">Geometría Analítica</label>
+                <div class="requirements">Desbloquea: Matemática 2, Física 1, Álgebra Lineal y Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="hombre-sociedad">
+                <input type="checkbox" id="check-hombre-sociedad" onchange="updateSubjects()">
+                <label for="check-hombre-sociedad">Hombre, Sociedad, Ciencia y Tecnología</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="dibujo">
+                <input type="checkbox" id="check-dibujo" onchange="updateSubjects()">
+                <label for="check-dibujo">Dibujo</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="educacion-ambiental">
+                <input type="checkbox" id="check-educacion-ambiental" onchange="updateSubjects()">
+                <label for="check-educacion-ambiental">Educación Ambiental</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="seminario1">
+                <input type="checkbox" id="check-seminario1" onchange="updateSubjects()">
+                <label for="check-seminario1">Seminario 1</label>
+                <div class="requirements">Desbloquea: Seminario 2 y Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="ingles1">
+                <input type="checkbox" id="check-ingles1" onchange="updateSubjects()">
+                <label for="check-ingles1">Inglés 1</label>
+                <div class="requirements">Desbloquea: Inglés 2 y Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="defensa1">
+                <input type="checkbox" id="check-defensa1" onchange="updateSubjects()">
+                <label for="check-defensa1">Defensa Integral de la Nación 1</label>
+                <div class="requirements">Desbloquea: Defensa Integral de la Nación 2 y Pasantía/TEG</div>
+            </div>
+        </div>
+
+        <div id="semester2" class="semester">
+            <h3>2do Semestre</h3>
+            <div class="subject locked" id="matematica2">
+                <input type="checkbox" id="check-matematica2" onchange="updateSubjects()" disabled>
+                <label for="check-matematica2">Matemática 2</label>
+                <div class="requirements">Desbloquea: Matemática 3, Física 2, Probabilidades y Estadística y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="fisica1">
+                <input type="checkbox" id="check-fisica1" onchange="updateSubjects()" disabled>
+                <label for="check-fisica1">Física 1</label>
+                <div class="requirements">Desbloquea: Física 2 y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="algebra-lineal">
+                <input type="checkbox" id="check-algebra-lineal" onchange="updateSubjects()" disabled>
+                <label for="check-algebra-lineal">Álgebra Lineal</label>
+                <div class="requirements">Desbloquea: Lógica Matemática, Programación y Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="quimica">
+                <input type="checkbox" id="check-quimica" onchange="updateSubjects()">
+                <label for="check-quimica">Química General</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="seminario2">
+                <input type="checkbox" id="check-seminario2" onchange="updateSubjects()" disabled>
+                <label for="check-seminario2">Seminario 2</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="ingles2">
+                <input type="checkbox" id="check-ingles2" onchange="updateSubjects()" disabled>
+                <label for="check-ingles2">Inglés 2</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="defensa2">
+                <input type="checkbox" id="check-defensa2" onchange="updateSubjects()" disabled>
+                <label for="check-defensa2">Defensa Integral de la Nación 2</label>
+                <div class="requirements">Desbloquea: Defensa Integral de la Nación 3 y Pasantía/TEG</div>
+            </div>
+        </div>
+
+        <div id="semester3" class="semester">
+            <h3>3er Semestre</h3>
+            <div class="subject locked" id="matematica3">
+                <input type="checkbox" id="check-matematica3" onchange="updateSubjects()" disabled>
+                <label for="check-matematica3">Matemática 3</label>
+                <div class="requirements">Desbloquea: Cálculo Numérico y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="fisica2">
+                <input type="checkbox" id="check-fisica2" onchange="updateSubjects()" disabled>
+                <label for="check-fisica2">Física 2</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="probabilidades">
+                <input type="checkbox" id="check-probabilidades" onchange="updateSubjects()" disabled>
+                <label for="check-probabilidades">Probabilidades y Estadística</label>
+                <div class="requirements">Desbloquea: Teoría de Grafos y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="programacion">
+                <input type="checkbox" id="check-programacion" onchange="updateSubjects()" disabled>
+                <label for="check-programacion">Programación</label>
+                <div class="requirements">Desbloquea: Lenguaje de Programación 1, Procesamiento de Datos y Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="sistemas-administrativos">
+                <input type="checkbox" id="check-sistemas-administrativos" onchange="updateSubjects()">
+                <label for="check-sistemas-administrativos">Sistemas Administrativos</label>
+                <div class="requirements">Desbloquea: Sistemas de Producción y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="defensa3">
+                <input type="checkbox" id="check-defensa3" onchange="updateSubjects()" disabled>
+                <label for="check-defensa3">Defensa Integral de la Nación 3</label>
+                <div class="requirements">Desbloquea: Defensa Integral de la Nación 4 y Pasantía/TEG</div>
+            </div>
+        </div>
+
+        <div id="semester4" class="semester">
+            <h3>4to Semestre</h3>
+            <div class="subject locked" id="calculo-numerico">
+                <input type="checkbox" id="check-calculo-numerico" onchange="updateSubjects()" disabled>
+                <label for="check-calculo-numerico">Cálculo Numérico</label>
+                <div class="requirements">Desbloquea: Investigación de Operaciones y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="logica-matematica">
+                <input type="checkbox" id="check-logica-matematica" onchange="updateSubjects()" disabled>
+                <label for="check-logica-matematica">Lógica Matemática</label>
+                <div class="requirements">Desbloquea: Teoría de Grafos, Circuitos Lógicos y Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="teoria-sistemas">
+                <input type="checkbox" id="check-teoria-sistemas" onchange="updateSubjects()">
+                <label for="check-teoria-sistemas">Teoría de los Sistemas</label>
+                <div class="requirements">Desbloquea: Análisis de Sistemas, Base de Datos y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="lenguaje-programacion1">
+                <input type="checkbox" id="check-lenguaje-programacion1" onchange="updateSubjects()" disabled>
+                <label for="check-lenguaje-programacion1">Lenguaje de Programación 1</label>
+                <div class="requirements">Desbloquea: Lenguaje de Programación 2 y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="procesamiento-datos">
+                <input type="checkbox" id="check-procesamiento-datos" onchange="updateSubjects()" disabled>
+                <label for="check-procesamiento-datos">Procesamiento de Datos</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="sistemas-produccion">
+                <input type="checkbox" id="check-sistemas-produccion" onchange="updateSubjects()" disabled>
+                <label for="check-sistemas-produccion">Sistemas de Producción</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="defensa4">
+                <input type="checkbox" id="check-defensa4" onchange="updateSubjects()" disabled>
+                <label for="check-defensa4">Defensa Integral de la Nación 4</label>
+                <div class="requirements">Desbloquea: Defensa Integral de la Nación 5 y Pasantía/TEG</div>
+            </div>
+        </div>
+
+        <div id="semester5" class="semester">
+            <h3>5to Semestre</h3>
+            <div class="subject locked" id="investigacion-operaciones">
+                <input type="checkbox" id="check-investigacion-operaciones" onchange="updateSubjects()" disabled>
+                <label for="check-investigacion-operaciones">Investigación de Operaciones</label>
+                <div class="requirements">Desbloquea: Optimización No Lineal y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="teoria-grafos">
+                <input type="checkbox" id="check-teoria-grafos" onchange="updateSubjects()" disabled>
+                <label for="check-teoria-grafos">Teoría de Grafos</label>
+                <div class="requirements">Desbloquea: Procesos Estocásticos y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="circuitos-logicos">
+                <input type="checkbox" id="check-circuitos-logicos" onchange="updateSubjects()" disabled>
+                <label for="check-circuitos-logicos">Circuitos Lógicos</label>
+                <div class="requirements">Desbloquea: Arquitectura del Computador y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="base-datos">
+                <input type="checkbox" id="check-base-datos" onchange="updateSubjects()" disabled>
+                <label for="check-base-datos">Base de Datos</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="analisis-sistemas">
+                <input type="checkbox" id="check-analisis-sistemas" onchange="updateSubjects()" disabled>
+                <label for="check-analisis-sistemas">Análisis de Sistemas</label>
+                <div class="requirements">Desbloquea: Diseño de Sistemas y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="lenguaje-programacion2">
+                <input type="checkbox" id="check-lenguaje-programacion2" onchange="updateSubjects()" disabled>
+                <label for="check-lenguaje-programacion2">Lenguaje de Programación 2</label>
+                <div class="requirements">Desbloquea: Lenguaje de Programación 3 y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="defensa5">
+                <input type="checkbox" id="check-defensa5" onchange="updateSubjects()" disabled>
+                <label for="check-defensa5">Defensa Integral de la Nación 5</label>
+                <div class="requirements">Desbloquea: Defensa Integral de la Nación 6 y Pasantía/TEG</div>
+            </div>
+        </div>
+
+        <div id="semester6" class="semester">
+            <h3>6to Semestre</h3>
+            <div class="subject locked" id="optimizacion-no-lineal">
+                <input type="checkbox" id="check-optimizacion-no-lineal" onchange="updateSubjects()" disabled>
+                <label for="check-optimizacion-no-lineal">Optimización No Lineal</label>
+                <div class="requirements">Desbloquea: Simulación y Modelos, y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="procesos-estocasticos">
+                <input type="checkbox" id="check-procesos-estocasticos" onchange="updateSubjects()" disabled>
+                <label for="check-procesos-estocasticos">Procesos Estocásticos</label>
+                <div class="requirements">Desbloquea: Simulación y Modelos, y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="arquitectura-computador">
+                <input type="checkbox" id="check-arquitectura-computador" onchange="updateSubjects()" disabled>
+                <label for="check-arquitectura-computador">Arquitectura del Computador</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="sistemas-operativos">
+                <input type="checkbox" id="check-sistemas-operativos" onchange="updateSubjects()">
+                <label for="check-sistemas-operativos">Sistemas Operativos</label>
+                <div class="requirements">Desbloquea: Redes y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="diseno-sistemas">
+                <input type="checkbox" id="check-diseno-sistemas" onchange="updateSubjects()" disabled>
+                <label for="check-diseno-sistemas">Diseño de Sistemas</label>
+                <div class="requirements">Desbloquea: Implantación de Sistemas y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="lenguaje-programacion3">
+                <input type="checkbox" id="check-lenguaje-programacion3" onchange="updateSubjects()" disabled>
+                <label for="check-lenguaje-programacion3">Lenguaje de Programación 3</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="defensa6">
+                <input type="checkbox" id="check-defensa6" onchange="updateSubjects()" disabled>
+                <label for="check-defensa6">Defensa Integral de la Nación 6</label>
+                <div class="requirements">Desbloquea: Defensa Integral de la Nación 7 y Pasantía/TEG</div>
+            </div>
+        </div>
+
+        <div id="semester7" class="semester">
+            <h3>7mo Semestre</h3>
+            <div class="subject locked" id="simulacion-modelos">
+                <input type="checkbox" id="check-simulacion-modelos" onchange="updateSubjects()" disabled>
+                <label for="check-simulacion-modelos">Simulación y Modelos</label>
+                <div class="requirements">Desbloquea: Teoría de Decisiones y Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="metodologia-investigacion">
+                <input type="checkbox" id="check-metodologia-investigacion" onchange="updateSubjects()">
+                <label for="check-metodologia-investigacion">Metodología de la Investigación</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="gerencia-informatica">
+                <input type="checkbox" id="check-gerencia-informatica" onchange="updateSubjects()">
+                <label for="check-gerencia-informatica">Gerencia de la Informática</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="redes">
+                <input type="checkbox" id="check-redes" onchange="updateSubjects()" disabled>
+                <label for="check-redes">Redes</label>
+                <div class="requirements">Desbloquea: Teleprocesos y Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="implantacion-sistemas">
+                <input type="checkbox" id="check-implantacion-sistemas" onchange="updateSubjects()" disabled>
+                <label for="check-implantacion-sistemas">Implantación de Sistemas</label>
+                <div class="requirements">Desbloquea: Auditoría de Sistemas y Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="electiva-tecnica1">
+                <input type="checkbox" id="check-electiva-tecnica1" onchange="updateSubjects()">
+                <label for="check-electiva-tecnica1">Electiva Técnica</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="electiva-no-tecnica1">
+                <input type="checkbox" id="check-electiva-no-tecnica1" onchange="updateSubjects()">
+                <label for="check-electiva-no-tecnica1">Electiva No Técnica</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="defensa7">
+                <input type="checkbox" id="check-defensa7" onchange="updateSubjects()" disabled>
+                <label for="check-defensa7">Defensa Integral de la Nación 7</label>
+                <div class="requirements">Desbloquea: Defensa Integral de la Nación 8 y Pasantía/TEG</div>
+            </div>
+        </div>
+
+        <div id="semester8" class="semester">
+            <h3>8vo Semestre</h3>
+            <div class="subject locked" id="teoria-decisiones">
+                <input type="checkbox" id="check-teoria-decisiones" onchange="updateSubjects()" disabled>
+                <label for="check-teoria-decisiones">Teoría de Decisiones</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="marco-legal">
+                <input type="checkbox" id="check-marco-legal" onchange="updateSubjects()">
+                <label for="check-marco-legal">Marco Legal para el Ejercicio de la Ingeniería</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="teleprocesos">
+                <input type="checkbox" id="check-teleprocesos" onchange="updateSubjects()" disabled>
+                <label for="check-teleprocesos">Teleprocesos</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="auditoria-sistemas">
+                <input type="checkbox" id="check-auditoria-sistemas" onchange="updateSubjects()" disabled>
+                <label for="check-auditoria-sistemas">Auditoría de Sistemas</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="electiva-tecnica2">
+                <input type="checkbox" id="check-electiva-tecnica2" onchange="updateSubjects()">
+                <label for="check-electiva-tecnica2">Electiva Técnica</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject" id="electiva-no-tecnica2">
+                <input type="checkbox" id="check-electiva-no-tecnica2" onchange="updateSubjects()">
+                <label for="check-electiva-no-tecnica2">Electiva No Técnica</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+            <div class="subject locked" id="defensa8">
+                <input type="checkbox" id="check-defensa8" onchange="updateSubjects()" disabled>
+                <label for="check-defensa8">Defensa Integral de la Nación 8</label>
+                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+            </div>
+        </div>
+
+        <div id="semester9" class="semester">
+            <h3>9no Semestre</h3>
+            <div class="subject locked pasantia" id="pasantia">
+                <input type="checkbox" id="check-pasantia" onchange="updateSubjects()" disabled>
+                <label for="check-pasantia">Pasantía o TEG</label>
+                <div class="requirements">Requiere todas las materias anteriores aprobadas</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mapeo de materias y sus requisitos
+        const prerequisites = {
+            // Primer semestre no tiene requisitos
+            "matematica1": [],
+            "geometria": [],
+            "hombre-sociedad": [],
+            "dibujo": [],
+            "educacion-ambiental": [],
+            "seminario1": [],
+            "ingles1": [],
+            "defensa1": [],
+            
+            // Segundo semestre
+            "matematica2": ["matematica1", "geometria"],
+            "fisica1": ["matematica1", "geometria"],
+            "algebra-lineal": ["matematica1", "geometria"],
+            "quimica": [],
+            "seminario2": ["seminario1"],
+            "ingles2": ["ingles1"],
+            "defensa2": ["defensa1"],
+            
+            // Tercer semestre
+            "matematica3": ["matematica2"],
+            "fisica2": ["fisica1"],
+            "probabilidades": ["matematica2"],
+            "programacion": ["algebra-lineal"],
+            "sistemas-administrativos": [],
+            "defensa3": ["defensa2"],
+            
+            // Cuarto semestre
+            "calculo-numerico": ["matematica3"],
+            "logica-matematica": ["algebra-lineal"],
+            "teoria-sistemas": [],
+            "lenguaje-programacion1": ["programacion"],
+            "procesamiento-datos": ["programacion"],
+            "sistemas-produccion": ["sistemas-administrativos"],
+            "defensa4": ["defensa3"],
+            
+            // Quinto semestre
+            "investigacion-operaciones": ["calculo-numerico"],
+            "teoria-grafos": ["logica-matematica", "probabilidades"],
+            "circuitos-logicos": ["logica-matematica"],
+            "base-datos": ["teoria-sistemas"],
+            "analisis-sistemas": ["teoria-sistemas"],
+            "lenguaje-programacion2": ["lenguaje-programacion1"],
+            "defensa5": ["defensa4"],
+            
+            // Sexto semestre
+            "optimizacion-no-lineal": ["investigacion-operaciones"],
+            "procesos-estocasticos": ["teoria-grafos"],
+            "arquitectura-computador": ["circuitos-logicos"],
+            "sistemas-operativos": [],
+            "diseno-sistemas": ["analisis-sistemas"],
+            "lenguaje-programacion3": ["lenguaje-programacion2"],
+            "defensa6": ["defensa5"],
+            
+            // Séptimo semestre
+            "simulacion-modelos": ["optimizacion-no-lineal", "procesos-estocasticos"],
+            "metodologia-investigacion": [],
+            "gerencia-informatica": [],
+            "redes": ["sistemas-operativos"],
+            "implantacion-sistemas": ["diseno-sistemas"],
+            "electiva-tecnica1": [],
+            "electiva-no-tecnica1": [],
+            "defensa7": ["defensa6"],
+            
+            // Octavo semestre
+            "teoria-decisiones": ["simulacion-modelos"],
+            "marco-legal": [],
+            "teleprocesos": ["redes"],
+            "auditoria-sistemas": ["implantacion-sistemas"],
+            "electiva-tecnica2": [],
+            "electiva-no-tecnica2": [],
+            "defensa8": ["defensa7"],
+            
+            // Noveno semestre
+            "pasantia": [
+                "matematica1", "geometria", "hombre-sociedad", "dibujo", "educacion-ambiental", "seminario1", "ingles1", "defensa1",
+                "matematica2", "fisica1", "algebra-lineal", "quimica", "seminario2", "ingles2", "defensa2",
+                "matematica3", "fisica2", "probabilidades", "programacion", "sistemas-administrativos", "defensa3",
+                "calculo-numerico", "logica-matematica", "teoria-sistemas", "lenguaje-programacion1", "procesamiento-datos", "sistemas-produccion", "defensa4",
+                "investigacion-operaciones", "teoria-grafos", "circuitos-logicos", "base-datos", "analisis-sistemas", "lenguaje-programacion2", "defensa5",
+                "optimizacion-no-lineal", "procesos-estocasticos", "arquitectura-computador", "sistemas-operativos", "diseno-sistemas", "lenguaje-programacion3", "defensa6",
+                "simulacion-modelos", "metodologia-investigacion", "gerencia-informatica", "redes", "implantacion-sistemas", "electiva-tecnica1", "electiva-no-tecnica1", "defensa7",
+                "teoria-decisiones", "marco-legal", "teleprocesos", "auditoria-sistemas", "electiva-tecnica2", "electiva-no-tecnica2", "defensa8"
+            ]
+        };
+
+        // Función para verificar si una materia está aprobada
+        function isApproved(subjectId) {
+            const checkbox = document.getElementById(`check-${subjectId}`);
+            return checkbox ? checkbox.checked : false;
+        }
+
+        // Función para verificar si se cumplen los requisitos de una materia
+        function checkPrerequisites(subjectId) {
+            const requiredSubjects = prerequisites[subjectId] || [];
+            return requiredSubjects.every(req => isApproved(req));
+        }
+
+        // Función para actualizar el estado de todas las materias
+        function updateSubjects() {
+            // Obtener todas las materias
+            const allSubjects = Object.keys(prerequisites);
+            
+            // Actualizar cada materia
+            allSubjects.forEach(subjectId => {
+                const subjectElement = document.getElementById(subjectId);
+                const checkbox = document.getElementById(`check-${subjectId}`);
+                
+                if (subjectElement && checkbox) {
+                    const prerequisitesMet = checkPrerequisites(subjectId);
+                    
+                    if (isApproved(subjectId)) {
+                        // Materia aprobada
+                        subjectElement.classList.remove("locked", "unlocked");
+                        subjectElement.classList.add("completed");
+                        checkbox.disabled = false;
+                    } else if (prerequisitesMet) {
+                        // Requisitos cumplidos pero no aprobada
+                        subjectElement.classList.remove("locked", "completed");
+                        subjectElement.classList.add("unlocked");
+                        checkbox.disabled = false;
+                    } else {
+                        // Requisitos no cumplidos
+                        subjectElement.classList.remove("unlocked", "completed");
+                        subjectElement.classList.add("locked");
+                        checkbox.disabled = true;
+                        checkbox.checked = false;
+                    }
+                }
+            });
+        }
+
+        // Función para marcar todas las materias
+        function checkAll() {
+            const allSubjects = Object.keys(prerequisites);
+            allSubjects.forEach(subjectId => {
+                const checkbox = document.getElementById(`check-${subjectId}`);
+                if (checkbox && !checkbox.disabled) {
+                    checkbox.checked = true;
+                }
+            });
+            updateSubjects();
+        }
+
+        // Función para desmarcar todas las materias
+        function uncheckAll() {
+            const allSubjects = Object.keys(prerequisites);
+            allSubjects.forEach(subjectId => {
+                const checkbox = document.getElementById(`check-${subjectId}`);
+                if (checkbox) {
+                    checkbox.checked = false;
+                }
+            });
+            updateSubjects();
+        }
+
+        // Inicializar la malla
+        window.onload = updateSubjects;
+    </script>
+</body>
+</html>
