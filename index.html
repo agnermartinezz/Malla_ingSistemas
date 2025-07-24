@@ -4,433 +4,730 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Malla Curricular - Ingeniería de Sistemas UNEFA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Reverie&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #1E88E5;
+            --secondary: #35a3fd;
+            --success: #4CAF50;
+            --danger: #E53935;
+            --warning: #FFB74D;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #212121;
+            --border: #BBDEFB;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f5f5f5;
-            overflow-x: auto;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #E3F2FD;
+            color: var(--text);
+            line-height: 1.6;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M30,30 Q50,10 70,30 T90,50 Q70,70 50,90 T10,50 Q30,30 50,10 T90,30" fill="none" stroke="%23FFD1DC" stroke-width="0.5"/></svg>');
         }
-        h1, h2 {
-            color: #2c3e50;
-            text-align: center;
-        }
-        .controls {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .btn {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 0 5px;
-            font-size: 16px;
-        }
-        .btn:hover {
-            background-color: #2980b9;
-        }
-        .btn-reset {
-            background-color: #e74c3c;
-        }
-        .btn-reset:hover {
-            background-color: #c0392b;
-        }
-        .semesters-container {
-            display: flex;
-            gap: 15px;
-            padding: 10px;
-            overflow-x: auto;
-        }
-        .semester {
-            background-color: white;
-            border-radius: 8px;
-            padding: 15px;
-            min-width: 280px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            flex-shrink: 0;
-        }
-        .subject {
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #ecf0f1;
+        
+        .header {
             display: flex;
             align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
         }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-right: 20px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Reverie', cursive;
+            color: var(--dark);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: var(--primary);
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.8);
+        }
+        
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            font-weight: 400;
+            margin-bottom: 30px;
+            color: var(--dark);
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 20px 0 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-reset {
+            background-color: var(--danger);
+        }
+        
+        .btn-save {
+            background-color: var(--success);
+            color: var(--dark);
+        }
+        
+        .semesters-container {
+            display: flex;
+            gap: 25px;
+            padding: 20px;
+            overflow-x: auto;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .semester {
+            background-color: white;
+            border-radius: 20px;
+            padding: 25px;
+            min-width: 300px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            flex-shrink: 0;
+            border-top: 8px solid var(--secondary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .semester::before {
+            content: "💻";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            opacity: 0.2;
+        }
+        
+        .semester:nth-child(odd)::before {
+            content: "⌨️";
+        }
+        
+        .semester:nth-child(3n)::before {
+            content: "🖥️";
+        }
+        
+        .semester:nth-child(4n)::before {
+            content: "📱";
+        }
+        
+        .semester h3 {
+            margin-top: 0;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed var(--border);
+            color: var(--primary);
+            font-weight: 500;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .subject {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 12px;
+            background-color: var(--light);
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            position: relative;
+            border-left: 5px solid transparent;
+        }
+        
+        .subject:hover {
+            transform: translateX(5px);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.05);
+        }
+        
         .subject input {
-            margin-right: 10px;
+            margin-right: 15px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
         }
+        
+        .subject label {
+            cursor: pointer;
+            flex-grow: 1;
+            font-weight: 500;
+        }
+        
         .locked {
-            background-color: #e74c3c;
-            color: white;
+            background-color: #FFF0F0;
+            color: var(--danger);
+            cursor: not-allowed;
+            border-left-color: var(--danger);
         }
+        
+        .locked label {
+            color: var(--danger);
+        }
+        
         .unlocked {
-            background-color: #2ecc71;
-            color: white;
+            background-color: #F0FFF7;
+            color: var(--success);
+            border-left-color: var(--success);
         }
+        
+        .unlocked label {
+            color: var(--dark);
+        }
+        
         .completed {
-            background-color: #3498db;
-            color: white;
+            background-color: #F0F8FF;
+            color: var(--primary);
+            border-left-color: var(--primary);
         }
+        
+        .completed label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
         .pasantia {
-            background-color: #9b59b6;
-            color: white;
+            background-color: #F5F0FF;
+            color: #9F7AEA;
             font-weight: bold;
             text-align: center;
-            padding: 15px;
+            padding: 20px;
             font-size: 1.2em;
+            border-radius: 15px;
+            border-left: 5px solid #9F7AEA;
+            position: relative;
         }
+        
+        .pasantia::after {
+            content: "🎓";
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 24px;
+            opacity: 0.3;
+        }
+        
         .requirements {
             font-size: 0.8em;
-            color: #7f8c8d;
-            margin-left: 30px;
+            color: #A8A8C0;
+            margin-left: 35px;
+            margin-top: 8px;
         }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 240px;
+            background-color: var(--dark);
+            color: #fff;
+            text-align: center;
+            border-radius: 12px;
+            padding: 12px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+            font-weight: normal;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--dark) transparent transparent transparent;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
         @media (max-width: 768px) {
             .semesters-container {
                 flex-direction: column;
             }
+            
             .semester {
                 min-width: auto;
             }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                width: 80px;
+                background-image:url(../Agner/unefa_logo.png);
+                
+            }
+        }
+        
+        .progress-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 30px auto;
+            background-color: #a0d4ff;
+            border-radius: 50px;
+            height: 25px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 50px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-bar::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.3) 100%);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 16px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            opacity: 0;
+            z-index: 1000;
+            animation: confetti-fall 5s linear forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .computer-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            color: var(--primary);
         }
     </style>
 </head>
 <body>
-    <h1>Malla Curricular Interactiva</h1>
-    <h2>Ingeniería de Sistemas - UNEFA</h2>
+    <div class="header">
+        <div class="logo"><img src="unefa-logo-png.png" style="width:185px;height:185px;"/>
+        </div>
+        <div>
+            <h1>Malla Curricular Interactiva</h1>
+            <h2>Ingeniería de Sistemas 💻</h2>
+        </div>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar">0%</div>
+    </div>
+    <div class="progress-text">
+        <i class="fas fa-tasks"></i>
+        <span id="progress-text">0 de 0 materias aprobadas</span>
+    </div>
 
     <div class="controls">
-        <button class="btn" onclick="checkAll()">Marcar Todos</button>
-        <button class="btn btn-reset" onclick="uncheckAll()">Desmarcar Todos</button>
+        <button class="btn" onclick="checkAll()"><i class="fas fa-check-circle"></i> Marcar Todos</button>
+        <button class="btn btn-reset" onclick="uncheckAll()"><i class="fas fa-undo"></i> Desmarcar Todos</button>
+        <button class="btn btn-save" onclick="saveProgress()"><i class="fas fa-save"></i> Guardar Progreso</button>
     </div>
 
     <div class="semesters-container">
         <div id="semester1" class="semester">
-            <h3>1er Semestre</h3>
+            <h3><i class="fas fa-laptop computer-icon"></i> Primer Año - Semestre 1</h3>
             <div class="subject" id="matematica1">
                 <input type="checkbox" id="check-matematica1" onchange="updateSubjects()">
                 <label for="check-matematica1">Matemática 1</label>
-                <div class="requirements">Desbloquea: Matemática 2, Física 1, Álgebra Lineal y Pasantía/TEG</div>
             </div>
             <div class="subject" id="geometria">
                 <input type="checkbox" id="check-geometria" onchange="updateSubjects()">
                 <label for="check-geometria">Geometría Analítica</label>
-                <div class="requirements">Desbloquea: Matemática 2, Física 1, Álgebra Lineal y Pasantía/TEG</div>
             </div>
             <div class="subject" id="hombre-sociedad">
                 <input type="checkbox" id="check-hombre-sociedad" onchange="updateSubjects()">
                 <label for="check-hombre-sociedad">Hombre, Sociedad, Ciencia y Tecnología</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
             </div>
             <div class="subject" id="dibujo">
                 <input type="checkbox" id="check-dibujo" onchange="updateSubjects()">
                 <label for="check-dibujo">Dibujo</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
             </div>
             <div class="subject" id="educacion-ambiental">
                 <input type="checkbox" id="check-educacion-ambiental" onchange="updateSubjects()">
                 <label for="check-educacion-ambiental">Educación Ambiental</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
             </div>
             <div class="subject" id="seminario1">
                 <input type="checkbox" id="check-seminario1" onchange="updateSubjects()">
                 <label for="check-seminario1">Seminario 1</label>
-                <div class="requirements">Desbloquea: Seminario 2 y Pasantía/TEG</div>
             </div>
             <div class="subject" id="ingles1">
                 <input type="checkbox" id="check-ingles1" onchange="updateSubjects()">
                 <label for="check-ingles1">Inglés 1</label>
-                <div class="requirements">Desbloquea: Inglés 2 y Pasantía/TEG</div>
             </div>
             <div class="subject" id="defensa1">
                 <input type="checkbox" id="check-defensa1" onchange="updateSubjects()">
                 <label for="check-defensa1">Defensa Integral de la Nación 1</label>
-                <div class="requirements">Desbloquea: Defensa Integral de la Nación 2 y Pasantía/TEG</div>
             </div>
         </div>
 
         <div id="semester2" class="semester">
-            <h3>2do Semestre</h3>
+            <h3><i class="fas fa-laptop-code computer-icon"></i> Primer Año - Semestre 2</h3>
             <div class="subject locked" id="matematica2">
                 <input type="checkbox" id="check-matematica2" onchange="updateSubjects()" disabled>
                 <label for="check-matematica2">Matemática 2</label>
-                <div class="requirements">Desbloquea: Matemática 3, Física 2, Probabilidades y Estadística y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Matemática 1 y Geometría Analítica</span></div>
             </div>
             <div class="subject locked" id="fisica1">
                 <input type="checkbox" id="check-fisica1" onchange="updateSubjects()" disabled>
                 <label for="check-fisica1">Física 1</label>
-                <div class="requirements">Desbloquea: Física 2 y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Matemática 1 y Geometría Analítica</span></div>
             </div>
             <div class="subject locked" id="algebra-lineal">
                 <input type="checkbox" id="check-algebra-lineal" onchange="updateSubjects()" disabled>
                 <label for="check-algebra-lineal">Álgebra Lineal</label>
-                <div class="requirements">Desbloquea: Lógica Matemática, Programación y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Matemática 1 y Geometría Analítica</span></div>
             </div>
             <div class="subject" id="quimica">
                 <input type="checkbox" id="check-quimica" onchange="updateSubjects()">
                 <label for="check-quimica">Química General</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
             </div>
             <div class="subject locked" id="seminario2">
                 <input type="checkbox" id="check-seminario2" onchange="updateSubjects()" disabled>
                 <label for="check-seminario2">Seminario 2</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Seminario 1</span></div>
             </div>
             <div class="subject locked" id="ingles2">
                 <input type="checkbox" id="check-ingles2" onchange="updateSubjects()" disabled>
                 <label for="check-ingles2">Inglés 2</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Inglés 1</span></div>
             </div>
             <div class="subject locked" id="defensa2">
                 <input type="checkbox" id="check-defensa2" onchange="updateSubjects()" disabled>
                 <label for="check-defensa2">Defensa Integral de la Nación 2</label>
-                <div class="requirements">Desbloquea: Defensa Integral de la Nación 3 y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Defensa Integral de la Nación 1</span></div>
             </div>
         </div>
 
         <div id="semester3" class="semester">
-            <h3>3er Semestre</h3>
+            <h3><i class="fas fa-desktop computer-icon"></i> Segundo Año - Semestre 3</h3>
             <div class="subject locked" id="matematica3">
                 <input type="checkbox" id="check-matematica3" onchange="updateSubjects()" disabled>
                 <label for="check-matematica3">Matemática 3</label>
-                <div class="requirements">Desbloquea: Cálculo Numérico y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Matemática 2</span></div>
             </div>
             <div class="subject locked" id="fisica2">
                 <input type="checkbox" id="check-fisica2" onchange="updateSubjects()" disabled>
                 <label for="check-fisica2">Física 2</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Física 1</span></div>
             </div>
             <div class="subject locked" id="probabilidades">
                 <input type="checkbox" id="check-probabilidades" onchange="updateSubjects()" disabled>
                 <label for="check-probabilidades">Probabilidades y Estadística</label>
-                <div class="requirements">Desbloquea: Teoría de Grafos y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Matemática 2</span></div>
             </div>
             <div class="subject locked" id="programacion">
                 <input type="checkbox" id="check-programacion" onchange="updateSubjects()" disabled>
                 <label for="check-programacion">Programación</label>
-                <div class="requirements">Desbloquea: Lenguaje de Programación 1, Procesamiento de Datos y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Álgebra Lineal</span></div>
             </div>
             <div class="subject" id="sistemas-administrativos">
                 <input type="checkbox" id="check-sistemas-administrativos" onchange="updateSubjects()">
                 <label for="check-sistemas-administrativos">Sistemas Administrativos</label>
-                <div class="requirements">Desbloquea: Sistemas de Producción y Pasantía/TEG</div>
             </div>
             <div class="subject locked" id="defensa3">
                 <input type="checkbox" id="check-defensa3" onchange="updateSubjects()" disabled>
                 <label for="check-defensa3">Defensa Integral de la Nación 3</label>
-                <div class="requirements">Desbloquea: Defensa Integral de la Nación 4 y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Defensa Integral de la Nación 2</span></div>
             </div>
         </div>
 
         <div id="semester4" class="semester">
-            <h3>4to Semestre</h3>
+            <h3><i class="fas fa-server computer-icon"></i> Segundo Año - Semestre 4</h3>
             <div class="subject locked" id="calculo-numerico">
                 <input type="checkbox" id="check-calculo-numerico" onchange="updateSubjects()" disabled>
                 <label for="check-calculo-numerico">Cálculo Numérico</label>
-                <div class="requirements">Desbloquea: Investigación de Operaciones y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Matemática 3</span></div>
             </div>
             <div class="subject locked" id="logica-matematica">
                 <input type="checkbox" id="check-logica-matematica" onchange="updateSubjects()" disabled>
                 <label for="check-logica-matematica">Lógica Matemática</label>
-                <div class="requirements">Desbloquea: Teoría de Grafos, Circuitos Lógicos y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Álgebra Lineal</span></div>
             </div>
             <div class="subject" id="teoria-sistemas">
                 <input type="checkbox" id="check-teoria-sistemas" onchange="updateSubjects()">
                 <label for="check-teoria-sistemas">Teoría de los Sistemas</label>
-                <div class="requirements">Desbloquea: Análisis de Sistemas, Base de Datos y Pasantía/TEG</div>
             </div>
             <div class="subject locked" id="lenguaje-programacion1">
                 <input type="checkbox" id="check-lenguaje-programacion1" onchange="updateSubjects()" disabled>
                 <label for="check-lenguaje-programacion1">Lenguaje de Programación 1</label>
-                <div class="requirements">Desbloquea: Lenguaje de Programación 2 y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Programación</span></div>
             </div>
             <div class="subject locked" id="procesamiento-datos">
                 <input type="checkbox" id="check-procesamiento-datos" onchange="updateSubjects()" disabled>
                 <label for="check-procesamiento-datos">Procesamiento de Datos</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Programación</span></div>
             </div>
             <div class="subject locked" id="sistemas-produccion">
                 <input type="checkbox" id="check-sistemas-produccion" onchange="updateSubjects()" disabled>
                 <label for="check-sistemas-produccion">Sistemas de Producción</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Sistemas Administrativos</span></div>
             </div>
             <div class="subject locked" id="defensa4">
                 <input type="checkbox" id="check-defensa4" onchange="updateSubjects()" disabled>
                 <label for="check-defensa4">Defensa Integral de la Nación 4</label>
-                <div class="requirements">Desbloquea: Defensa Integral de la Nación 5 y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Defensa Integral de la Nación 3</span></div>
             </div>
         </div>
 
         <div id="semester5" class="semester">
-            <h3>5to Semestre</h3>
+            <h3><i class="fas fa-microchip computer-icon"></i> Tercer Año - Semestre 5</h3>
             <div class="subject locked" id="investigacion-operaciones">
                 <input type="checkbox" id="check-investigacion-operaciones" onchange="updateSubjects()" disabled>
                 <label for="check-investigacion-operaciones">Investigación de Operaciones</label>
-                <div class="requirements">Desbloquea: Optimización No Lineal y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Cálculo Numérico</span></div>
             </div>
             <div class="subject locked" id="teoria-grafos">
                 <input type="checkbox" id="check-teoria-grafos" onchange="updateSubjects()" disabled>
                 <label for="check-teoria-grafos">Teoría de Grafos</label>
-                <div class="requirements">Desbloquea: Procesos Estocásticos y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Lógica Matemática y Probabilidades</span></div>
             </div>
             <div class="subject locked" id="circuitos-logicos">
                 <input type="checkbox" id="check-circuitos-logicos" onchange="updateSubjects()" disabled>
                 <label for="check-circuitos-logicos">Circuitos Lógicos</label>
-                <div class="requirements">Desbloquea: Arquitectura del Computador y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Lógica Matemática</span></div>
             </div>
             <div class="subject locked" id="base-datos">
                 <input type="checkbox" id="check-base-datos" onchange="updateSubjects()" disabled>
                 <label for="check-base-datos">Base de Datos</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Teoría de los Sistemas</span></div>
             </div>
             <div class="subject locked" id="analisis-sistemas">
                 <input type="checkbox" id="check-analisis-sistemas" onchange="updateSubjects()" disabled>
                 <label for="check-analisis-sistemas">Análisis de Sistemas</label>
-                <div class="requirements">Desbloquea: Diseño de Sistemas y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Teoría de los Sistemas</span></div>
             </div>
             <div class="subject locked" id="lenguaje-programacion2">
                 <input type="checkbox" id="check-lenguaje-programacion2" onchange="updateSubjects()" disabled>
                 <label for="check-lenguaje-programacion2">Lenguaje de Programación 2</label>
-                <div class="requirements">Desbloquea: Lenguaje de Programación 3 y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Lenguaje de Programación 1</span></div>
             </div>
             <div class="subject locked" id="defensa5">
                 <input type="checkbox" id="check-defensa5" onchange="updateSubjects()" disabled>
                 <label for="check-defensa5">Defensa Integral de la Nación 5</label>
-                <div class="requirements">Desbloquea: Defensa Integral de la Nación 6 y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Defensa Integral de la Nación 4</span></div>
             </div>
         </div>
 
         <div id="semester6" class="semester">
-            <h3>6to Semestre</h3>
+            <h3><i class="fas fa-network-wired computer-icon"></i> Tercer Año - Semestre 6</h3>
             <div class="subject locked" id="optimizacion-no-lineal">
                 <input type="checkbox" id="check-optimizacion-no-lineal" onchange="updateSubjects()" disabled>
                 <label for="check-optimizacion-no-lineal">Optimización No Lineal</label>
-                <div class="requirements">Desbloquea: Simulación y Modelos, y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Investigación de Operaciones</span></div>
             </div>
             <div class="subject locked" id="procesos-estocasticos">
                 <input type="checkbox" id="check-procesos-estocasticos" onchange="updateSubjects()" disabled>
                 <label for="check-procesos-estocasticos">Procesos Estocásticos</label>
-                <div class="requirements">Desbloquea: Simulación y Modelos, y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Teoría de Grafos</span></div>
             </div>
             <div class="subject locked" id="arquitectura-computador">
                 <input type="checkbox" id="check-arquitectura-computador" onchange="updateSubjects()" disabled>
                 <label for="check-arquitectura-computador">Arquitectura del Computador</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Circuitos Lógicos</span></div>
             </div>
             <div class="subject" id="sistemas-operativos">
                 <input type="checkbox" id="check-sistemas-operativos" onchange="updateSubjects()">
                 <label for="check-sistemas-operativos">Sistemas Operativos</label>
-                <div class="requirements">Desbloquea: Redes y Pasantía/TEG</div>
             </div>
             <div class="subject locked" id="diseno-sistemas">
                 <input type="checkbox" id="check-diseno-sistemas" onchange="updateSubjects()" disabled>
                 <label for="check-diseno-sistemas">Diseño de Sistemas</label>
-                <div class="requirements">Desbloquea: Implantación de Sistemas y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Análisis de Sistemas</span></div>
             </div>
             <div class="subject locked" id="lenguaje-programacion3">
                 <input type="checkbox" id="check-lenguaje-programacion3" onchange="updateSubjects()" disabled>
                 <label for="check-lenguaje-programacion3">Lenguaje de Programación 3</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Lenguaje de Programación 2</span></div>
             </div>
             <div class="subject locked" id="defensa6">
                 <input type="checkbox" id="check-defensa6" onchange="updateSubjects()" disabled>
                 <label for="check-defensa6">Defensa Integral de la Nación 6</label>
-                <div class="requirements">Desbloquea: Defensa Integral de la Nación 7 y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Defensa Integral de la Nación 5</span></div>
             </div>
         </div>
 
         <div id="semester7" class="semester">
-            <h3>7mo Semestre</h3>
+            <h3><i class="fas fa-cloud computer-icon"></i> Cuarto Año - Semestre 7</h3>
             <div class="subject locked" id="simulacion-modelos">
                 <input type="checkbox" id="check-simulacion-modelos" onchange="updateSubjects()" disabled>
                 <label for="check-simulacion-modelos">Simulación y Modelos</label>
-                <div class="requirements">Desbloquea: Teoría de Decisiones y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Optimización No Lineal y Procesos Estocásticos</span></div>
             </div>
             <div class="subject" id="metodologia-investigacion">
                 <input type="checkbox" id="check-metodologia-investigacion" onchange="updateSubjects()">
                 <label for="check-metodologia-investigacion">Metodología de la Investigación</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
             </div>
             <div class="subject" id="gerencia-informatica">
                 <input type="checkbox" id="check-gerencia-informatica" onchange="updateSubjects()">
                 <label for="check-gerencia-informatica">Gerencia de la Informática</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
             </div>
             <div class="subject locked" id="redes">
                 <input type="checkbox" id="check-redes" onchange="updateSubjects()" disabled>
                 <label for="check-redes">Redes</label>
-                <div class="requirements">Desbloquea: Teleprocesos y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Sistemas Operativos</span></div>
             </div>
             <div class="subject locked" id="implantacion-sistemas">
                 <input type="checkbox" id="check-implantacion-sistemas" onchange="updateSubjects()" disabled>
                 <label for="check-implantacion-sistemas">Implantación de Sistemas</label>
-                <div class="requirements">Desbloquea: Auditoría de Sistemas y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Diseño de Sistemas</span></div>
             </div>
             <div class="subject" id="electiva-tecnica1">
                 <input type="checkbox" id="check-electiva-tecnica1" onchange="updateSubjects()">
                 <label for="check-electiva-tecnica1">Electiva Técnica</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
             </div>
             <div class="subject" id="electiva-no-tecnica1">
                 <input type="checkbox" id="check-electiva-no-tecnica1" onchange="updateSubjects()">
                 <label for="check-electiva-no-tecnica1">Electiva No Técnica</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
             </div>
             <div class="subject locked" id="defensa7">
                 <input type="checkbox" id="check-defensa7" onchange="updateSubjects()" disabled>
                 <label for="check-defensa7">Defensa Integral de la Nación 7</label>
-                <div class="requirements">Desbloquea: Defensa Integral de la Nación 8 y Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Defensa Integral de la Nación 6</span></div>
             </div>
         </div>
 
         <div id="semester8" class="semester">
-            <h3>8vo Semestre</h3>
+            <h3><i class="fas fa-shield-alt computer-icon"></i> Cuarto Año - Semestre 8</h3>
             <div class="subject locked" id="teoria-decisiones">
                 <input type="checkbox" id="check-teoria-decisiones" onchange="updateSubjects()" disabled>
                 <label for="check-teoria-decisiones">Teoría de Decisiones</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Simulación y Modelos</span></div>
             </div>
             <div class="subject" id="marco-legal">
                 <input type="checkbox" id="check-marco-legal" onchange="updateSubjects()">
                 <label for="check-marco-legal">Marco Legal para el Ejercicio de la Ingeniería</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
             </div>
             <div class="subject locked" id="teleprocesos">
                 <input type="checkbox" id="check-teleprocesos" onchange="updateSubjects()" disabled>
                 <label for="check-teleprocesos">Teleprocesos</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Redes</span></div>
             </div>
             <div class="subject locked" id="auditoria-sistemas">
                 <input type="checkbox" id="check-auditoria-sistemas" onchange="updateSubjects()" disabled>
                 <label for="check-auditoria-sistemas">Auditoría de Sistemas</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Implantación de Sistemas</span></div>
             </div>
             <div class="subject" id="electiva-tecnica2">
                 <input type="checkbox" id="check-electiva-tecnica2" onchange="updateSubjects()">
                 <label for="check-electiva-tecnica2">Electiva Técnica</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
             </div>
             <div class="subject" id="electiva-no-tecnica2">
                 <input type="checkbox" id="check-electiva-no-tecnica2" onchange="updateSubjects()">
                 <label for="check-electiva-no-tecnica2">Electiva No Técnica</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
             </div>
             <div class="subject locked" id="defensa8">
                 <input type="checkbox" id="check-defensa8" onchange="updateSubjects()" disabled>
                 <label for="check-defensa8">Defensa Integral de la Nación 8</label>
-                <div class="requirements">Desbloquea: Pasantía/TEG</div>
+                <div class="tooltip"><span class="tooltiptext">Requisitos: Defensa Integral de la Nación 7</span></div>
             </div>
         </div>
 
         <div id="semester9" class="semester">
-            <h3>9no Semestre</h3>
+            <h3><i class="fas fa-graduation-cap computer-icon"></i> Quinto Año - Semestre 9</h3>
             <div class="subject locked pasantia" id="pasantia">
                 <input type="checkbox" id="check-pasantia" onchange="updateSubjects()" disabled>
                 <label for="check-pasantia">Pasantía o TEG</label>
-                <div class="requirements">Requiere todas las materias anteriores aprobadas</div>
+                <div class="tooltip"><span class="tooltiptext">Requiere todas las materias anteriores aprobadas</span></div>
             </div>
         </div>
     </div>
@@ -536,10 +833,29 @@
             return requiredSubjects.every(req => isApproved(req));
         }
 
+        // Función para crear confeti
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 75%)`;
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+
         // Función para actualizar el estado de todas las materias
         function updateSubjects() {
             // Obtener todas las materias
             const allSubjects = Object.keys(prerequisites);
+            let completedCount = 0;
             
             // Actualizar cada materia
             allSubjects.forEach(subjectId => {
@@ -554,6 +870,7 @@
                         subjectElement.classList.remove("locked", "unlocked");
                         subjectElement.classList.add("completed");
                         checkbox.disabled = false;
+                        completedCount++;
                     } else if (prerequisitesMet) {
                         // Requisitos cumplidos pero no aprobada
                         subjectElement.classList.remove("locked", "completed");
@@ -568,6 +885,25 @@
                     }
                 }
             });
+            
+            // Actualizar barra de progreso
+            updateProgressBar(completedCount, allSubjects.length);
+            
+            // Mostrar confeti si se completó todo
+            if (completedCount === allSubjects.length) {
+                createConfetti();
+            }
+        }
+
+        // Función para actualizar la barra de progreso
+        function updateProgressBar(completed, total) {
+            const percentage = Math.round((completed / total) * 100);
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            progressBar.style.width = `${percentage}%`;
+            progressBar.textContent = `${percentage}%`;
+            progressText.textContent = `${completed} de ${total} materias aprobadas (${percentage}%)`;
         }
 
         // Función para marcar todas las materias
@@ -594,8 +930,71 @@
             updateSubjects();
         }
 
-        // Inicializar la malla
-        window.onload = updateSubjects;
+        // Función para guardar el progreso en localStorage
+        function saveProgress() {
+            const allSubjects = Object.keys(prerequisites);
+            const progress = {};
+            
+            allSubjects.forEach(subjectId => {
+                const checkbox = document.getElementById(`check-${subjectId}`);
+                if (checkbox) {
+                    progress[subjectId] = checkbox.checked;
+                }
+            });
+            
+            localStorage.setItem('mallaCurricularProgress', JSON.stringify(progress));
+            
+            // Mostrar notificación kawaii
+            const notification = document.createElement('div');
+            notification.textContent = '¡Progreso guardado! 💾';
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = 'var(--primary)';
+            notification.style.color = 'white';
+            notification.style.padding = '15px 25px';
+            notification.style.borderRadius = '50px';
+            notification.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+            notification.style.zIndex = '1000';
+            notification.style.animation = 'fadeIn 0.3s';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.3s';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Función para cargar el progreso desde localStorage
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('mallaCurricularProgress');
+            if (savedProgress) {
+                const progress = JSON.parse(savedProgress);
+                
+                Object.keys(progress).forEach(subjectId => {
+                    const checkbox = document.getElementById(`check-${subjectId}`);
+                    if (checkbox) {
+                        checkbox.checked = progress[subjectId];
+                    }
+                });
+                
+                updateSubjects();
+            }
+        }
+
+        // Inicializar la malla y cargar progreso guardado
+        window.onload = function() {
+            updateSubjects();
+            loadProgress();
+            
+            // Agregar animación de entrada
+            document.querySelectorAll('.semester').forEach((semester, index) => {
+                setTimeout(() => {
+                    semester.style.opacity = '1';
+                    semester.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        };
     </script>
 </body>
 </html>
